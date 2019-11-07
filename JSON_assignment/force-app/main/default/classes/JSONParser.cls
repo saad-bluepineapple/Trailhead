@@ -38,9 +38,9 @@ public class JSONParser {
                         
                         //
                         else if(x == 'lastModifiedOn' || x == 'createdOn'){
-                            Datetime dt = DateTime.parse((String)data.get(x));
-                            String myDtString = dt.format();
-                            con.put(x+'__c',myDtString);
+                            
+                            
+                            con.put(x+'__c',string.valueOf(data.get(x)));
                         }
                         else if(x == 'email'){
                             con.put('Email',data.get(x));
@@ -54,7 +54,8 @@ public class JSONParser {
                         
                         //
                         else{
-                            con.put(x+'__c',data.get(x));
+                           	if(JSONParserUtil.doesFieldExist('Contact', x + '__c')) 
+                            	con.put(x+'__c',data.get(x));
                         }
             		}
                     else{
@@ -71,7 +72,7 @@ public class JSONParser {
 		}
         
         try{
-        	upsert contactList;
+        	insert contactList;
             System.debug(contactList.size() +' Records inserted successfully!');
         }catch(Exception e){
             System.debug('Err: '+ e);
